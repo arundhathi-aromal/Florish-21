@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Twenty-one</title>
+<meta name="theme-color" content="#0D0820">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Twenty-one">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* ---------- palettes: vivid jewel tones, gold detail ---------- */
+:root {
+  --bg:#F6F3FF; --surface:#FFFFFF; --ink:#1E1240; --muted:#6B5E96; --line:#E1D9F5;
+  --accent:#3B1A78; --accent-ink:#FFFFFF; --on-hc:#FFFFFF; --gold:#8F6410; --glow:.16; color-scheme:light dark;
+  --c0:#E6256B; --c1:#D96400; --c2:#0FA97A; --c3:#2D5BFF; --c4:#8A2BE2; --c5:#B07A00; --c6:#0A9FD0; --c7:#5F8A00;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-pal]) {
+    --bg:#0D0820; --surface:#1A1033; --ink:#F7F2FF; --muted:#A99BCF; --line:#34265B;
+    --accent:#F4C95D; --accent-ink:#1C1230; --on-hc:#160B2B; --gold:#F4C95D; --glow:.24;
+    --c0:#FF4F8B; --c1:#FF9A2E; --c2:#25E3A0; --c3:#4F86FF; --c4:#B65CFF; --c5:#FFD23F; --c6:#1BD3F5; --c7:#B4F22A;
+  }
+}
+:root[data-pal="velvet"] {
+  color-scheme:dark;
+  --bg:#0D0820; --surface:#1A1033; --ink:#F7F2FF; --muted:#A99BCF; --line:#34265B;
+  --accent:#F4C95D; --accent-ink:#1C1230; --on-hc:#160B2B; --gold:#F4C95D; --glow:.24;
+  --c0:#FF4F8B; --c1:#FF9A2E; --c2:#25E3A0; --c3:#4F86FF; --c4:#B65CFF; --c5:#FFD23F; --c6:#1BD3F5; --c7:#B4F22A;
+}
+:root[data-pal="peacock"] {
+  color-scheme:dark;
+  --bg:#031B1C; --surface:#0A3032; --ink:#EAFBF8; --muted:#84BDB6; --line:#14504F;
+  --accent:#FFC857; --accent-ink:#07201F; --on-hc:#04201F; --gold:#FFC857; --glow:.24;
+  --c0:#FF4F8B; --c1:#FF9A2E; --c2:#25E3A0; --c3:#4F86FF; --c4:#B65CFF; --c5:#FFD23F; --c6:#1BD3F5; --c7:#B4F22A;
+}
+:root[data-pal="porcelain"] {
+  color-scheme:light;
+  --bg:#F6F3FF; --surface:#FFFFFF; --ink:#1E1240; --muted:#6B5E96; --line:#E1D9F5;
+  --accent:#3B1A78; --accent-ink:#FFFFFF; --on-hc:#FFFFFF; --gold:#8F6410; --glow:.16;
+  --c0:#E6256B; --c1:#D96400; --c2:#0FA97A; --c3:#2D5BFF; --c4:#8A2BE2; --c5:#B07A00; --c6:#0A9FD0; --c7:#5F8A00;
+}
+:root[data-pal="rose"] {
+  color-scheme:light;
+  --bg:#FFF3F6; --surface:#FFFFFF; --ink:#3B1024; --muted:#96647A; --line:#F6D5DF;
+  --accent:#B3124E; --accent-ink:#FFFFFF; --on-hc:#FFFFFF; --gold:#8F6410; --glow:.16;
+  --c0:#E6256B; --c1:#D96400; --c2:#0FA97A; --c3:#2D5BFF; --c4:#8A2BE2; --c5:#B07A00; --c6:#0A9FD0; --c7:#5F8A00;
+}
+:root[data-pal="cotton"] {
+  --em:#A8467C;
+  --bg:#FFF0F6; --surface:#FFFFFF; --ink:#4A2340; --muted:#A07090; --line:#F8D3E4;
+  --accent:#F08DB8; --accent-ink:#3D1030; --on-hc:#2B1D45; --gold:#A8467C; --glow:.5; color-scheme:light;
+  --amb1:#FFB3D1; --amb2:#BFD4FF; --amb3:#FFD6A8;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="lavender"] {
+  --em:#6F4FC4;
+  --bg:#F3EEFF; --surface:#FFFFFF; --ink:#35255E; --muted:#8C7FB5; --line:#E0D6F8;
+  --accent:#B79CF5; --accent-ink:#251449; --on-hc:#2B1D45; --gold:#6F4FC4; --glow:.5; color-scheme:light;
+  --amb1:#CDB8FF; --amb2:#FFB8E0; --amb3:#B8D4FF;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="mint"] {
+  --em:#2F8466;
+  --bg:#EAF9F3; --surface:#FFFFFF; --ink:#1D4A3C; --muted:#6FA392; --line:#CBEBDD;
+  --accent:#67D2AA; --accent-ink:#0E3326; --on-hc:#2B1D45; --gold:#2F8466; --glow:.5; color-scheme:light;
+  --amb1:#A8EBD0; --amb2:#BDE8FF; --amb3:#E3F5A8;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="peach"] {
+  --em:#B5502A;
+  --bg:#FFF1EA; --surface:#FFFFFF; --ink:#5A2E1E; --muted:#B58370; --line:#FADCCB;
+  --accent:#FFA583; --accent-ink:#4A1A0A; --on-hc:#2B1D45; --gold:#B5502A; --glow:.5; color-scheme:light;
+  --amb1:#FFC2A8; --amb2:#FFE0A0; --amb3:#FFB8D0;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="sky"] {
+  --em:#3F78C4;
+  --bg:#EDF5FF; --surface:#FFFFFF; --ink:#1F3A63; --muted:#7C98C2; --line:#D3E3FA;
+  --accent:#85B8F7; --accent-ink:#0F2748; --on-hc:#2B1D45; --gold:#3F78C4; --glow:.5; color-scheme:light;
+  --amb1:#A8CCFF; --amb2:#C9B8FF; --amb3:#A8EEE0;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="lemon"] {
+  --em:#8A7500;
+  --bg:#FFFAE0; --surface:#FFFFFF; --ink:#4D4210; --muted:#A99C58; --line:#F5EBB0;
+  --accent:#F4D654; --accent-ink:#3D3305; --on-hc:#2B1D45; --gold:#8A7500; --glow:.5; color-scheme:light;
+  --amb1:#FFE68A; --amb2:#FFC9A0; --amb3:#C8EBA0;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="twilight"] {
+  --bg:#2A2440; --surface:#372F55; --ink:#F6F0FF; --muted:#BDB0E3; --line:#4C4373;
+  --accent:#C9B2FF; --accent-ink:#2A2050; --on-hc:#241838; --gold:#E2CFFF; --glow:.28; color-scheme:dark;
+  --amb1:#8F7BE0; --amb2:#E08FC8; --amb3:#7FB5F0;
+  --c0:#FF9DBF; --c1:#FFC285; --c2:#86E8C4; --c3:#9DB6FF; --c4:#CBA9FF; --c5:#FFE27A; --c6:#86DAF7; --c7:#C4EA7E;
+}
+:root[data-pal="dusky"] {
+  --bg:#3A2433; --surface:#4B2F42; --ink:#FFF0F5; --muted:#D9AFC2; --line:#62405A;
+  --accent:#FFB3C7; --accent-ink:#3D1024; --on-hc:#241838; --gold:#FFCADA; --glow:.28; color-scheme:dark;
+  --amb1:#E88FAF; --amb2:#C9A0F0; --amb3:#F2B38F;
+  --c0:#FF9DBF; --c1:#FFC285; --c2:#86E8C4; --c3:#9DB6FF; --c4:#CBA9FF; --c5:#FFE27A; --c6:#86DAF7; --c7:#C4EA7E;
+}
+:root[data-pal="lilacgrey"] {
+  --em:#6E6488;
+  --bg:#F1EFF5; --surface:#FFFFFF; --ink:#3A3548; --muted:#8E889E; --line:#DDD9E8;
+  --accent:#B5A8CC; --accent-ink:#2A2438; --on-hc:#2B1D45; --gold:#6E6488; --glow:.5; color-scheme:light;
+  --amb1:#C9C0DC; --amb2:#D9D2E6; --amb3:#BFCBDD;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="sage"] {
+  --em:#5B7A4E;
+  --bg:#EFF3EA; --surface:#FFFFFF; --ink:#2E3A2A; --muted:#7F8F78; --line:#DAE3D2;
+  --accent:#A3BE96; --accent-ink:#1F2C1A; --on-hc:#2B1D45; --gold:#5B7A4E; --glow:.5; color-scheme:light;
+  --amb1:#BFD3B0; --amb2:#D8E2C0; --amb3:#C0DCCB;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+:root[data-pal="coral"] {
+  --em:#B8433A;
+  --bg:#FFF0EE; --surface:#FFFFFF; --ink:#5A2724; --muted:#BA7F79; --line:#FBD6D1;
+  --accent:#FF8F85; --accent-ink:#4A1210; --on-hc:#2B1D45; --gold:#B8433A; --glow:.5; color-scheme:light;
+  --amb1:#FFB3AA; --amb2:#FFD0B0; --amb3:#FFB0C4;
+  --c0:#F38BB1; --c1:#FFB067; --c2:#6FD3B0; --c3:#86A4FF; --c4:#B896FF; --c5:#F2D04F; --c6:#6EC9EE; --c7:#A9D85A;
+}
+html { scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif; font-size:16px; line-height:1.5; -webkit-tap-highlight-color:transparent; }
+.disp { font-family:"Instrument Serif",Georgia,"Times New Roman",serif; font-weight:400; letter-spacing:-0.01em; }
+main { position:relative; z-index:1; max-width:520px; margin:0 auto; padding:26px 20px 140px; }
+button { font:inherit; color:inherit; cursor:pointer; transition:transform .15s ease, background-color .2s, border-color .2s, box-shadow .2s; }
+button:active:not(:disabled) { transform:scale(.96); }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+.muted { color:var(--muted); }
+.small { font-size:14px; color:var(--muted); }
+.eyebrow { font-size:12px; letter-spacing:.17em; text-transform:uppercase; font-weight:700; color:var(--gold); }
+em { font-style:italic; }
+
+/* ambient light */
+.ambient { position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+.ambient i { position:absolute; width:75vmax; height:75vmax; border-radius:50%; filter:blur(90px); opacity:var(--glow); }
+.ambient i:nth-child(1) { background:var(--amb1, var(--c0)); top:-30vmax; left:-25vmax; animation:drift1 26s ease-in-out infinite alternate; }
+.ambient i:nth-child(2) { background:var(--amb2, var(--c4)); bottom:-35vmax; right:-30vmax; animation:drift2 32s ease-in-out infinite alternate; }
+.ambient i:nth-child(3) { background:var(--amb3, var(--c6)); top:35%; left:55%; width:45vmax; height:45vmax; opacity:calc(var(--glow) * .6); animation:drift3 38s ease-in-out infinite alternate; }
+@keyframes drift1 { to { transform:translate(18vmax,12vmax) scale(1.15); } }
+@keyframes drift2 { to { transform:translate(-16vmax,-10vmax) scale(1.2); } }
+@keyframes drift3 { to { transform:translate(-20vmax,14vmax) scale(.85); } }
+
+/* header */
+.hello { font-size:52px; line-height:1; margin:10px 0 12px; overflow-wrap:anywhere; }
+.hello em { color:var(--em, var(--accent)); }
+.line { margin:12px 0 0; color:var(--muted); font-size:15px; }
+.dots { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:22px 0 4px; }
+.dots i { width:13px; height:13px; border-radius:50%; border:2px solid var(--hc); transition:background-color .3s, box-shadow .3s; }
+.dots i.on { background:var(--hc); box-shadow:0 0 10px var(--hc); }
+.dots span { margin-left:6px; font-weight:600; font-size:15px; }
+.msg { font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:33px; line-height:1.08; margin:22px 0 8px; letter-spacing:-0.01em; overflow-wrap:anywhere; }
+.msg.big { font-size:35px; margin:14px 0 6px; }
+.why { margin:0; color:var(--muted); font-size:15px; }
+.nudge { margin-top:18px; border-radius:16px; padding:14px 16px; background:color-mix(in srgb, var(--accent) 16%, var(--surface)); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); font-weight:600; font-size:15px; }
+.jtoday { display:flex; align-items:center; gap:14px; width:100%; text-align:left; margin-top:20px; padding:16px 18px; border-radius:22px; background:var(--surface); border:1px solid color-mix(in srgb, var(--gold) 45%, transparent); }
+.jtoday .jt { flex:1; min-width:0; }
+.jtoday .jt b { display:block; font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:25px; line-height:1.1; }
+.jtoday .jt span.pv { display:block; color:var(--muted); font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.jtoday .pen { flex:none; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:color-mix(in srgb, var(--gold) 20%, transparent); color:var(--gold); font-size:20px; }
+
+/* garden tiles */
+.garden { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:20px; }
+.garden.one { grid-template-columns:1fr; }
+.tile { position:relative; border-radius:28px; background:linear-gradient(155deg, color-mix(in srgb, var(--hc) 34%, var(--surface)) 0%, color-mix(in srgb, var(--hc) 9%, var(--surface)) 72%); border:1px solid color-mix(in srgb, var(--hc) 50%, transparent); box-shadow:0 14px 34px -16px color-mix(in srgb, var(--hc) 70%, transparent); }
+.tilemain { display:block; width:100%; text-align:left; background:none; border:0; padding:14px 14px 16px; border-radius:28px; }
+.bwrap { position:relative; display:grid; place-items:center; margin:2px 6px 8px; }
+.bwrap svg { display:block; width:100%; height:auto; }
+.tile .petal { stroke-width:2; }
+.tile .petal.on { filter:drop-shadow(0 0 5px color-mix(in srgb, var(--hc) 80%, transparent)); }
+.tile .hubn { position:absolute; font-family:"Instrument Serif",Georgia,serif; font-size:26px; line-height:1; pointer-events:none; }
+.garden.one .tile .hubn { font-size:40px; }
+.tname { font-size:17px; font-weight:700; line-height:1.2; overflow-wrap:anywhere; padding-right:50px; }
+.tsub { font-size:13px; color:var(--muted); font-weight:500; padding-right:50px; margin-top:2px; }
+.tick { position:absolute; right:12px; bottom:12px; width:46px; height:46px; border-radius:50%; border:2px solid var(--hc); background:color-mix(in srgb, var(--surface) 80%, transparent); display:grid; place-items:center; color:transparent; }
+.tick svg { width:24px; height:24px; }
+.tick.on { background:linear-gradient(135deg, var(--hc), color-mix(in srgb, var(--hc) 70%, #fff)); color:var(--on-hc); box-shadow:0 0 18px color-mix(in srgb, var(--hc) 70%, transparent); }
+.tick.pop { animation:tickpop .5s cubic-bezier(.2,1.6,.4,1); }
+.tick.pop path { stroke-dasharray:30; animation:draw .45s .08s ease-out both; }
+.regrow { position:absolute; right:10px; bottom:10px; border:2px solid var(--hc); background:var(--surface); border-radius:999px; padding:8px 12px; font-weight:700; font-size:13px; }
+.add-row { display:block; width:100%; margin-top:14px; background:none; border:1.5px dashed color-mix(in srgb, var(--gold) 55%, transparent); border-radius:22px; padding:16px; font-weight:600; color:var(--gold); }
+
+/* petals */
+.petal { fill:color-mix(in srgb, var(--hc) 9%, transparent); stroke:color-mix(in srgb, var(--ink) 26%, transparent); stroke-width:1.5; transform-box:fill-box; transform-origin:50% 100%; }
+.petal.future { opacity:.6; }
+.petal.now { stroke:var(--hc); stroke-dasharray:4 4; }
+.petal.on { stroke:color-mix(in srgb, var(--hc) 55%, #fff); stroke-width:1; stroke-dasharray:none; }
+.hero .petal.on { filter:drop-shadow(0 0 7px var(--hc)); }
+.enter .petal { animation:petalin .75s cubic-bezier(.2,1.25,.4,1) both; animation-delay:calc(var(--pi, 0) * 26ms + 160ms); }
+.petal.pop { animation:petalpop .8s cubic-bezier(.2,1.3,.4,1); animation-delay:0s; }
+
+/* motion */
+@keyframes petalpop { from { transform:scale(.05); filter:brightness(2.2); } to { transform:scale(1); } }
+@keyframes petalin { from { transform:scale(.1); opacity:0; } to { transform:scale(1); } }
+@keyframes tickpop { 0% { transform:scale(.6); } 100% { transform:scale(1); } }
+@keyframes draw { from { stroke-dashoffset:30; } to { stroke-dashoffset:0; } }
+@keyframes breathe { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+@keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@keyframes tilein { from { opacity:0; transform:translateY(24px) scale(.94); } to { opacity:1; transform:none; } }
+@keyframes grow { from { width:0; } }
+@keyframes fall { 0% { transform:translateY(-20px) rotate(0); opacity:1; } 100% { transform:translateY(105vh) rotate(540deg); opacity:.8; } }
+@keyframes spark { from { transform:translate(-50%,-50%) scale(1); opacity:1; } to { transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2); opacity:0; } }
+@keyframes sheetin { from { transform:translateY(100%); } to { transform:none; } }
+@keyframes fadein { from { opacity:0; } to { opacity:1; } }
+@keyframes chipin { 0% { transform:scale(.8); } 100% { transform:scale(1); } }
+@keyframes toastin { from { opacity:0; transform:translate(-50%,16px); } to { opacity:1; transform:translate(-50%,0); } }
+@keyframes sway { 0%,100% { transform:rotate(-1.5deg) scale(1); } 50% { transform:rotate(1.5deg) scale(1.025); } }
+.enter > *:not(.garden) { animation:rise .6s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--i, 0) * 55ms); }
+.enter .tile { animation:tilein .7s cubic-bezier(.2,.9,.25,1) both; animation-delay:calc(var(--ti, 0) * 90ms + 250ms); }
+.enter .jcard { animation:rise .55s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--si, 0) * 50ms + 200ms); }
+.enter .bar i { animation:grow 1s cubic-bezier(.2,.8,.2,1) both; animation-delay:.3s; }
+.enter .hcell i { animation:fadein .5s both; animation-delay:calc(var(--hi, 0) * 14ms + 200ms); }
+@media (prefers-reduced-motion: no-preference) {
+  .hero .petal.now { animation:breathe 2.6s ease-in-out infinite; }
+  .hero svg { animation:sway 14s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enter *, .petal.pop, .tick.pop, .tick.pop path, .ambient i { animation:none !important; }
+}
+.fall { position:fixed; top:-30px; width:14px; height:22px; border-radius:50% 50% 50% 50%/70% 70% 30% 30%; pointer-events:none; z-index:70; animation:fall 2.6s ease-in forwards; }
+.spark { position:fixed; width:7px; height:7px; border-radius:50%; pointer-events:none; z-index:70; animation:spark .7s ease-out forwards; }
+.toast { position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:80; background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:999px; font-weight:600; font-size:14px; max-width:90vw; text-align:center; animation:toastin .35s ease-out both; }
+
+/* habit page */
+.top { display:flex; justify-content:space-between; align-items:center; min-height:44px; }
+.link { background:none; border:0; padding:10px 0; color:var(--muted); font-weight:600; }
+.link.strong { color:var(--ink); }
+.title { font-size:42px; line-height:1.05; margin:8px 0 4px; overflow-wrap:anywhere; }
+.hero { position:relative; display:grid; place-items:center; margin:18px 0 14px; }
+.hero::before { content:""; position:absolute; width:66%; aspect-ratio:1; border-radius:50%; background:var(--hc); opacity:.3; filter:blur(52px); }
+.hero svg { position:relative; width:min(84vw,320px); height:auto; display:block; }
+.hub { position:absolute; text-align:center; pointer-events:none; }
+.hub b { display:block; font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:52px; line-height:.9; }
+.hub span { font-size:12px; color:var(--muted); font-weight:600; }
+.btn { display:block; width:100%; border:0; border-radius:16px; padding:17px; font-weight:700; font-size:17px; background:var(--accent); color:var(--accent-ink); box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 10px 26px -12px var(--accent); }
+.btn.hc { background:linear-gradient(135deg, var(--hc), color-mix(in srgb, var(--hc) 70%, var(--c4))); color:var(--on-hc); box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 12px 28px -12px var(--hc); }
+.btn.done { background:transparent; color:var(--ink); border:2px solid var(--hc); box-shadow:none; }
+.btn.ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+.btn.sm { display:inline-block; width:auto; padding:11px 16px; font-size:15px; border-radius:14px; }
+.btn.danger { background:transparent; color:#E5484D; border:1.5px solid color-mix(in srgb, #E5484D 45%, transparent); box-shadow:none; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); margin:26px 0 8px; }
+.stat { text-align:center; padding:2px 4px; }
+.stat + .stat { border-left:1px solid color-mix(in srgb, var(--gold) 40%, transparent); }
+.stat b { display:block; font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:46px; line-height:1; }
+.stat span { font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.h3 { font-size:27px; margin:34px 0 12px; }
+.days { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+.day { aspect-ratio:1; border-radius:50%; border:1.5px solid var(--line); background:transparent; padding:0; font-weight:600; font-size:13px; color:var(--muted); display:grid; place-items:center; min-width:0; }
+.day.miss { border-style:dashed; }
+.day.on { background:var(--hc); border-color:var(--hc); color:var(--on-hc); box-shadow:0 0 12px color-mix(in srgb, var(--hc) 60%, transparent); }
+.day.today { border:2.5px solid var(--hc); color:var(--ink); }
+.day.on.today { color:var(--on-hc); }
+.day.sel { box-shadow:0 0 0 3px var(--bg), 0 0 0 5px var(--ink); }
+.day.future { opacity:.35; cursor:default; }
+.panel { margin-top:20px; background:var(--surface); border:1px solid var(--line); border-radius:24px; padding:20px; }
+.panel h4 { margin:0 0 4px; font-size:17px; }
+.panel p { margin:0 0 14px; color:var(--muted); font-size:15px; }
+.moods { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin:6px 0 14px; }
+.mood { border:1.5px solid var(--line); background:transparent; border-radius:14px; padding:9px 0 7px; font-size:22px; line-height:1; display:grid; gap:4px; justify-items:center; min-width:0; }
+.mood small { font-size:11px; color:var(--muted); font-weight:600; }
+.mood.on { border-color:var(--hc, var(--accent)); background:color-mix(in srgb, var(--hc, var(--accent)) 20%, transparent); animation:chipin .4s cubic-bezier(.2,1.7,.4,1); }
+textarea, input[type=text], input[type=time], input[type=date], input[type=number] { width:100%; font:inherit; color:var(--ink); background:var(--surface); border:1.5px solid var(--line); border-radius:14px; padding:13px; }
+.panel textarea { background:var(--bg); }
+textarea { min-height:84px; resize:vertical; }
+.banner { margin-top:22px; border-radius:24px; padding:20px; background:linear-gradient(150deg, color-mix(in srgb, var(--hc) 30%, var(--surface)), color-mix(in srgb, var(--hc) 10%, var(--surface))); border:1px solid color-mix(in srgb, var(--hc) 50%, transparent); }
+.banner h4 { margin:0 0 4px; font-size:26px; font-family:"Instrument Serif",Georgia,serif; font-weight:400; }
+.banner p { margin:0 0 14px; }
+.center { text-align:center; margin-top:30px; }
+
+/* progress */
+.bigstats { display:grid; grid-template-columns:1fr 1fr; gap:22px 12px; margin:24px 0 8px; }
+.bigstats b { display:block; font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:62px; line-height:.95; }
+.bigstats span { font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.wk, .heat { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.wk span { text-align:center; font-size:12px; font-weight:600; color:var(--muted); }
+.hcell { aspect-ratio:1; border-radius:9px; background:var(--line); opacity:.55; position:relative; overflow:hidden; }
+.hcell.ghost { background:transparent; }
+.hcell i { position:absolute; inset:0; background:var(--accent); opacity:var(--a); }
+.hcell.has { opacity:1; background:color-mix(in srgb, var(--line) 60%, transparent); }
+.hcell.now { outline:2px solid var(--ink); outline-offset:1px; opacity:1; }
+.ft { display:block; width:100%; text-align:left; background:none; border:0; padding:14px 0; border-bottom:1px solid var(--line); }
+.ft .r { display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+.ft .n { font-weight:600; font-size:17px; overflow-wrap:anywhere; }
+.bar { height:9px; border-radius:5px; background:var(--line); overflow:hidden; margin:9px 0 6px; }
+.bar i { display:block; height:100%; border-radius:5px; background:linear-gradient(90deg, var(--hc), color-mix(in srgb, var(--hc) 65%, #fff)); }
+
+/* journals */
+.jlab { font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--muted); margin:20px 0 8px; }
+.tags { display:flex; flex-wrap:wrap; gap:8px; }
+.tag { border:1.5px solid var(--line); background:transparent; border-radius:999px; padding:8px 13px; font-size:14px; font-weight:600; }
+.tag.on { background:color-mix(in srgb, var(--accent) 22%, transparent); border-color:var(--accent); animation:chipin .4s cubic-bezier(.2,1.7,.4,1); }
+.starters { margin:0 0 10px; }
+.starters .chip { font-size:13px; padding:7px 12px; color:var(--muted); }
+.jlist { margin-top:8px; }
+.jmonth { margin:26px 0 10px; }
+.jcard { display:flex; gap:16px; width:100%; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:16px; margin-bottom:10px; }
+.jcard:hover { border-color:color-mix(in srgb, var(--gold) 55%, transparent); }
+.jdate { flex:none; width:52px; text-align:center; }
+.jdate b { display:block; font-family:"Instrument Serif",Georgia,serif; font-weight:400; font-size:38px; line-height:1; }
+.jdate span { font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--gold); }
+.jbody { flex:1; min-width:0; }
+.jbody p { margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:15px; }
+.jbody .jt2 { margin-top:6px; font-size:13px; color:var(--muted); }
+.jmoodface { flex:none; font-size:26px; align-self:flex-start; }
+.jnav { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:6px 0 4px; }
+.jnav h1 { font-size:34px; line-height:1.05; text-align:center; flex:1; margin:0; }
+.arrow { flex:none; width:44px; height:44px; border-radius:50%; border:1.5px solid var(--line); background:none; font-size:20px; line-height:1; display:grid; place-items:center; }
+.arrow:disabled { opacity:.3; }
+.tended { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.tended span { font-size:14px; font-weight:600; padding:6px 12px; border-radius:999px; background:color-mix(in srgb, var(--hc) 22%, transparent); border:1px solid color-mix(in srgb, var(--hc) 55%, transparent); }
+.sheet-back { position:fixed; inset:0; z-index:60; background:rgba(8,4,20,.62); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; animation:fadein .3s both; }
+.sheet { width:100%; max-width:520px; max-height:94vh; overflow-y:auto; background:var(--bg); border:1px solid color-mix(in srgb, var(--gold) 45%, transparent); border-bottom:0; border-radius:30px 30px 0 0; padding:12px 22px calc(24px + env(safe-area-inset-bottom,0px)); animation:sheetin .5s cubic-bezier(.2,.9,.25,1) both; }
+.grab { width:44px; height:5px; border-radius:3px; background:var(--line); margin:0 auto 18px; }
+.sheet-h { font-size:38px; line-height:1.05; margin:8px 0 8px; }
+.sheet-h em { color:var(--em, var(--accent)); }
+
+.pals { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px; }
+.pal { border:1.5px solid var(--line); border-radius:18px; background:var(--surface); padding:7px 7px 9px; text-align:center; font-size:13px; font-weight:600; min-width:0; }
+.pal .pv { display:flex; align-items:center; justify-content:center; gap:4px; height:52px; border-radius:12px; background:var(--pb); margin-bottom:7px; position:relative; overflow:hidden; }
+.pal .pv i { width:12px; height:12px; border-radius:50%; }
+.pal .pv b { position:absolute; left:8px; right:8px; bottom:6px; height:4px; border-radius:2px; background:var(--pa); }
+.pal.on { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+/* forms */
+label.l { display:block; font-weight:700; margin:24px 0 8px; }
+.hint { font-size:14px; color:var(--muted); margin:8px 0 0; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 0; }
+.chip { border:1.5px solid var(--line); background:transparent; border-radius:999px; padding:9px 14px; font-size:15px; font-weight:500; }
+.chip.on { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700; }
+.emojis { display:grid; grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); gap:8px; margin-top:10px; }
+.emo { aspect-ratio:1; border-radius:14px; border:1.5px solid var(--line); background:transparent; font-size:22px; padding:0; }
+.emo.on { border-color:var(--hc); background:color-mix(in srgb, var(--hc) 24%, transparent); }
+.swatches { display:flex; flex-wrap:wrap; gap:12px; margin:10px 0 0; }
+.sw { width:42px; height:42px; border-radius:50%; background:var(--hc); border:0; display:grid; place-items:center; color:var(--on-hc); padding:0; }
+.sw svg { width:20px; height:20px; opacity:0; }
+.sw.on svg { opacity:1; }
+.sw.on { box-shadow:0 0 0 3px var(--bg), 0 0 0 5px var(--hc); }
+.pickwrap { position:relative; width:42px; height:42px; border-radius:50%; background:conic-gradient(#ff4f8b,#ff9a2e,#ffd23f,#25e3a0,#1bd3f5,#4f86ff,#b65cff,#ff4f8b); }
+.pickwrap.on { box-shadow:0 0 0 3px var(--bg), 0 0 0 5px var(--ink); }
+.pickwrap input { position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; }
+.stepper { display:flex; align-items:center; gap:10px; margin-top:12px; }
+.stepper input { width:96px; text-align:center; font-size:20px; font-weight:700; }
+.rem { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:14px; margin-top:12px; }
+.rem .r1 { display:flex; gap:10px; align-items:center; }
+.rem .r1 input { flex:1; background:var(--bg); }
+.rem .x { flex:none; width:44px; height:44px; border-radius:50%; border:1.5px solid var(--line); background:none; font-size:20px; line-height:1; }
+.rem .dchips { display:flex; gap:6px; margin-top:12px; }
+.dchip { flex:1; aspect-ratio:1; max-width:46px; border-radius:50%; border:1.5px solid var(--line); background:none; font-weight:700; font-size:13px; padding:0; color:var(--muted); }
+.dchip.on { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+.qt { margin-top:10px; }
+.qt .chip { padding:6px 11px; font-size:13px; color:var(--muted); }
+.row2 { display:flex; gap:10px; align-items:center; }
+.sec { font-size:30px; margin:40px 0 4px; }
+.formhero { position:relative; display:grid; place-items:center; margin:12px 0 0; }
+.formhero svg { width:170px; height:170px; position:relative; }
+.formhero::before { content:""; position:absolute; width:110px; height:110px; border-radius:50%; background:var(--hc); opacity:.3; filter:blur(34px); }
+
+/* tab bar */
+.tabs { position:fixed; left:0; right:0; bottom:0; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-top:1px solid color-mix(in srgb, var(--gold) 30%, transparent); padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px)); z-index:20; }
+.tabs div { max-width:520px; margin:0 auto; display:flex; justify-content:space-around; align-items:flex-end; }
+.tab { background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted); font-size:11px; font-weight:700; padding:4px 6px; min-width:56px; }
+.tab svg { width:25px; height:25px; transition:transform .25s cubic-bezier(.2,1.6,.4,1); }
+.tab.on { color:var(--ink); }
+.tab.on svg { transform:translateY(-3px) scale(1.12); color:var(--accent); }
+.tab .plus { width:48px; height:48px; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center; box-shadow:0 8px 22px -8px var(--accent); }
+.tab .plus svg { width:24px; height:24px; }
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+<main id="app"></main>
+<nav class="tabs" id="tabs" aria-label="Main"></nav>
+<div id="overlay"></div>
+<input type="file" id="importfile" accept="application/json,.json" hidden>
+<script>
+(function () {
+  var KEY = "twentyone:v2", FIRED = "twentyone:fired";
+  var state = { name: "", affirm: [], templates: [], pal: "auto", shape: "round", skipWelcome: false, journal: {}, journalAsk: true, askedOn: "", habits: [] };
+  var view = { screen: "today", id: null, sel: 0, flash: null, confirmDel: false, draft: null, prompt: false, jdate: "", entryDate: "", jfilter: "" };
+  var lastScreenKey = "", uidc = 0;
+  var REDUCED = false;
+  try { REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+  var MOODS = [{ id: "great", e: "🤩", l: "Great" }, { id: "proud", e: "🥹", l: "Proud" }, { id: "happy", e: "😊", l: "Happy" }, { id: "calm", e: "😌", l: "Calm" }, { id: "grateful", e: "🙏", l: "Grateful" }, { id: "okay", e: "😐", l: "Okay" }, { id: "tired", e: "😴", l: "Tired" }, { id: "anxious", e: "😰", l: "Anxious" }, { id: "sad", e: "😢", l: "Sad" }, { id: "rough", e: "😣", l: "Rough" }];
+  var TAGS = [{ id: "work", e: "💼", l: "Work" }, { id: "family", e: "🏡", l: "Family" }, { id: "friends", e: "👯", l: "Friends" }, { id: "love", e: "💗", l: "Love" }, { id: "exercise", e: "🏃", l: "Exercise" }, { id: "food", e: "🍜", l: "Food" }, { id: "sleep", e: "🌙", l: "Sleep" }, { id: "nature", e: "🌿", l: "Nature" }, { id: "metime", e: "🕯️", l: "Me time" }, { id: "learning", e: "📚", l: "Learning" }];
+  var STARTERS = ["Today I felt…", "I'm grateful for…", "A small win:", "Something hard:", "Tomorrow I want to…"];
+  var PLACEHOLDERS = ["What made you smile today?", "What was hard, and what helped?", "What do you want to remember about today?", "What are you proud of today?", "What would you tell a friend about your day?"];
+  var OLDMOOD = { 1: "rough", 2: "okay", 3: "happy", 4: "great" };
+  var SUGGESTIONS = ["Drink more water", "Stretch for 10 minutes", "Write in a journal", "Walk outside", "Lights out by 11", "Phone-free first hour", "Three slow breaths"];
+  var EMOJIS = ["🌿", "💧", "🧘", "📖", "🏃", "🍎", "😴", "✍️", "🎧", "🚶", "🙏", "☀️", "🧠", "🫖", "💊", "🌸", "🎨", "🧹", "🦷", "💪"];
+  var LINES = ["Small and steady counts.", "You don't have to be perfect. Just come back.", "Be gentle with today.", "One petal at a time.", "Showing up is the whole practice.", "Rest is part of the plan.", "Tend to yourself like you'd tend a garden."];
+  var PALS = [["auto", "Auto"], ["velvet", "Velvet"], ["peacock", "Peacock"], ["porcelain", "Porcelain"], ["rose", "Rosé"], ["cotton", "Cotton Candy"], ["lavender", "Lavender"], ["mint", "Mint"], ["peach", "Peach"], ["sky", "Sky"], ["lemon", "Lemon"], ["lilacgrey", "Lilac Grey"], ["sage", "Sage"], ["coral", "Coral"], ["twilight", "Twilight"], ["dusky", "Dusky Rose"]];
+  var PALDATA = { velvet: ["#0D0820", "#F4C95D", "vd"], peacock: ["#031B1C", "#FFC857", "vd"], porcelain: ["#F6F3FF", "#3B1A78", "vl"], rose: ["#FFF3F6", "#B3124E", "vl"], cotton: ["#FFF0F6", "#F08DB8", "pl"], lavender: ["#F3EEFF", "#B79CF5", "pl"], mint: ["#EAF9F3", "#67D2AA", "pl"], peach: ["#FFF1EA", "#FFA583", "pl"], sky: ["#EDF5FF", "#85B8F7", "pl"], lemon: ["#FFFAE0", "#F4D654", "pl"], lilacgrey: ["#F1EFF5", "#B5A8CC", "pl"], sage: ["#EFF3EA", "#A3BE96", "pl"], coral: ["#FFF0EE", "#FF8F85", "pl"], twilight: ["#2A2440", "#C9B2FF", "pd"], dusky: ["#3A2433", "#FFB3C7", "pd"] };
+  var PDOTS = { vd: ["#FF4F8B", "#4F86FF", "#25E3A0"], vl: ["#E6256B", "#2D5BFF", "#0FA97A"], pl: ["#F38BB1", "#86A4FF", "#6FD3B0"], pd: ["#FF9DBF", "#9DB6FF", "#86E8C4"] };
+  var PALMIG = { dusk: "velvet", moss: "peacock", mist: "porcelain", blush: "rose", midnight: "twilight", ember: "peach", noir: "twilight", orchid: "dusky", meadow: "mint", ocean: "sky", citrus: "lemon" };
+  var SHAPES = [["round", "Round"], ["leaf", "Leaf"], ["slim", "Slim"]];
+  var GOALS = [7, 14, 21, 30, 66, 100];
+  var QTIMES = [["07:00", "7 AM"], ["09:00", "9 AM"], ["12:00", "Noon"], ["15:00", "3 PM"], ["18:00", "6 PM"], ["21:00", "9 PM"]];
+  var DAYL = ["S", "M", "T", "W", "T", "F", "S"], ICSD = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var ICON_TODAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+  var ICON_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+  var ICON_PROG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>';
+  var ICON_YOU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c.8-4 4-6 7.500-6s6.700 2 7.500 6"/></svg>';
+  var ICON_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h11a2 2 0 0 1 2 2v15H8a2 2 0 0 1-2-2V3z"/><path d="M6 18a2 2 0 0 1 2-2h11M10 8h5"/></svg>';
+
+  /* ---------- storage ---------- */
+  function normalize() {
+    state.pal = PALMIG[state.pal] || state.pal || "auto";
+    state.journal = state.journal || {};
+    Object.keys(state.journal).forEach(function (k) { var e = state.journal[k]; e.text = e.text || ""; e.mood = e.mood || ""; e.tags = e.tags || []; });
+    state.habits.forEach(function (h) {
+      h.why = h.why || ""; h.emoji = h.emoji || ""; h.custom = h.custom || ""; h.remMsg = h.remMsg || "";
+      h.goal = h.goal || 21; h.reminders = h.reminders || []; h.blooms = h.blooms || 0; h.color = (h.color || 0) % 8;
+      Object.keys(h.days).forEach(function (k) { var e = h.days[k]; if (typeof e.mood === "number") e.mood = e.mood ? OLDMOOD[e.mood] || "" : ""; });
+    });
+  }
+  function adopt(p) {
+    state.habits = p.habits; state.name = p.name || ""; state.affirm = p.affirm || []; state.templates = p.templates || [];
+    state.pal = p.pal || "auto"; state.shape = p.shape || "round"; state.skipWelcome = !!p.skipWelcome;
+    state.journal = p.journal || {}; state.journalAsk = p.journalAsk !== false; state.askedOn = p.askedOn || "";
+    normalize();
+  }
+  function load() {
+    try {
+      var r = localStorage.getItem(KEY);
+      if (r) { var p = JSON.parse(r); if (p && Array.isArray(p.habits)) { adopt(p); return; } }
+      var o = localStorage.getItem("twentyone:v1");
+      if (o) {
+        var q = JSON.parse(o);
+        if (q && Array.isArray(q.practices)) {
+          state.habits = q.practices.map(function (p, i) { return { id: p.id, name: p.name, color: i % 8, created: p.start, start: p.start, blooms: 0, days: p.days || {} }; });
+          normalize(); save();
+        }
+      }
+    } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); }
+
+  /* ---------- dates ---------- */
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function keyOf(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function parse(k) { var a = k.split("-"); return new Date(+a[0], +a[1] - 1, +a[2]); }
+  function addDays(k, n) { var d = parse(k); d.setDate(d.getDate() + n); return keyOf(d); }
+  function diff(a, b) { var x = parse(a), y = parse(b); return Math.round((Date.UTC(y.getFullYear(), y.getMonth(), y.getDate()) - Date.UTC(x.getFullYear(), x.getMonth(), x.getDate())) / 86400000); }
+  function today() { return keyOf(new Date()); }
+  function pretty(k) { return parse(k).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }); }
+  function longDate(k) { return parse(k).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }); }
+  function nowHHMM() { var n = new Date(); return pad(n.getHours()) + ":" + pad(n.getMinutes()); }
+  function fmtTime(hhmm) { var p = hhmm.split(":"), h = +p[0]; return ((h % 12) || 12) + ":" + p[1] + (h < 12 ? " AM" : " PM"); }
+
+  /* ---------- habit maths ---------- */
+  function get(id) { return state.habits.filter(function (h) { return h.id === id; })[0]; }
+  function goalOf(h) { return h.goal || 21; }
+  function isDone(h, k) { var d = h.days[k]; return !!(d && d.done); }
+  function ti(h) { return diff(h.start, today()); }
+  function isActive(h) { var t = ti(h); return t >= 0 && t < goalOf(h); }
+  function active() { return state.habits.filter(isActive); }
+  function pending() { return active().filter(function (h) { return !isDone(h, today()); }); }
+  function hcStyle(h) {
+    if (h.custom) {
+      var c = h.custom, r = parseInt(c.substr(1, 2), 16), g = parseInt(c.substr(3, 2), 16), b = parseInt(c.substr(5, 2), 16);
+      var lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return "--hc:" + c + ";--on-hc:" + (lum > 0.62 ? "#160B2B" : "#FFFFFF") + ";";
+    }
+    return "--hc:var(--c" + (h.color % 8) + ");";
+  }
+  function curStreak(h) { var k = today(); if (!isDone(h, k)) k = addDays(k, -1); var n = 0; while (isDone(h, k)) { n++; k = addDays(k, -1); } return n; }
+  function bestStreak(h) {
+    var ks = Object.keys(h.days).filter(function (k) { return h.days[k].done; }).sort();
+    var best = 0, run = 0, prev = null;
+    ks.forEach(function (k) { run = (prev && diff(prev, k) === 1) ? run + 1 : 1; if (run > best) best = run; prev = k; });
+    return best;
+  }
+  function cycleDone(h) { var n = 0, G = goalOf(h); for (var i = 0; i < G; i++) if (isDone(h, addDays(h.start, i))) n++; return n; }
+  function followed(h) {
+    var el = Math.max(1, Math.min(goalOf(h), ti(h) + 1)), n = 0;
+    for (var i = 0; i < el; i++) if (isDone(h, addDays(h.start, i))) n++;
+    return { done: n, elapsed: el, pct: Math.round(n / el * 100) };
+  }
+  function totalChecks(h) { return Object.keys(h.days).filter(function (k) { return h.days[k].done; }).length; }
+  function moodOf(id) { return MOODS.filter(function (m) { return m.id === id; })[0]; }
+  function label(h) { return (h.emoji ? h.emoji + " " : "") + h.name; }
+  function doneOn(k) { return state.habits.filter(function (h) { return isDone(h, k); }); }
+
+  /* ---------- journal ---------- */
+  function jget(k) { return state.journal[k] || null; }
+  function jensure(k) { return state.journal[k] || (state.journal[k] = { text: "", mood: "", tags: [], ts: Date.now() }); }
+  function jempty(e) { return !e || (!e.text.trim() && !e.mood && !(e.tags && e.tags.length)); }
+  function jclean(k) { if (k && state.journal[k] && jempty(state.journal[k])) { delete state.journal[k]; save(); } }
+  function jkeys() { return Object.keys(state.journal).filter(function (k) { return !jempty(state.journal[k]); }).sort().reverse(); }
+  function jstreak() {
+    var k = today(); if (jempty(jget(k))) k = addDays(k, -1);
+    var n = 0; while (!jempty(jget(k))) { n++; k = addDays(k, -1); }
+    return n;
+  }
+  function moodsHtml(k) {
+    var e = jget(k) || { mood: "" };
+    return MOODS.map(function (m) { return '<button class="mood' + (e.mood === m.id ? " on" : "") + '" data-act="jmood" data-m="' + m.id + '"><span>' + m.e + '</span><small>' + m.l + '</small></button>'; }).join("");
+  }
+  function tagsHtml(k) {
+    var e = jget(k) || { tags: [] };
+    return TAGS.map(function (t) { return '<button class="tag' + (e.tags.indexOf(t.id) >= 0 ? " on" : "") + '" data-act="jtag" data-t="' + t.id + '">' + t.e + ' ' + t.l + '</button>'; }).join("");
+  }
+  function journalFields(k) {
+    var e = jget(k) || { text: "" };
+    var out = '<div class="jlab">How did it feel?</div><div class="moods" id="jmoods">' + moodsHtml(k) + '</div>';
+    out += '<div class="jlab">What shaped it?</div><div class="tags" id="jtags">' + tagsHtml(k) + '</div>';
+    out += '<div class="jlab">In your words <span style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></div><div class="chips starters">';
+    STARTERS.forEach(function (s, i) { out += '<button class="chip" data-act="jstart" data-i="' + i + '">' + esc(s) + '</button>'; });
+    out += '</div><textarea id="jtext" style="min-height:110px" placeholder="' + esc(PLACEHOLDERS[diff("2024-01-01", k) % PLACEHOLDERS.length]) + '">' + esc(e.text) + '</textarea>';
+    return out;
+  }
+  function bindJournal() {
+    var ta = document.getElementById("jtext");
+    if (ta) ta.addEventListener("input", function () { jensure(view.jdate).text = ta.value; save(); });
+  }
+  function maybePrompt() {
+    var k = today();
+    if (!state.journalAsk || state.askedOn === k || view.prompt) return;
+    if (!jempty(jget(k))) return;
+    if (!state.habits.length && !jkeys().length) return;
+    if (["today", "progress", "journals", "you", "habit"].indexOf(view.screen) < 0) return;
+    view.jdate = k; view.prompt = true; render();
+  }
+  function sheetHtml() {
+    var k = today(), hr = new Date().getHours(), nm = state.name ? esc(state.name) : "";
+    var head = hr < 12 ? "How are you feeling this morning" : hr < 18 ? "How is your day going" : "How was your day";
+    var out = '<div class="sheet-back"><div class="sheet" role="dialog" aria-modal="true" aria-label="Describe your day"><div class="grab"></div>';
+    out += '<div class="eyebrow">' + longDate(k) + '</div><h2 class="disp sheet-h">' + head + (nm ? ', <em>' + nm + '</em>' : '') + '?</h2>';
+    out += '<p class="muted" style="margin:0">A few taps or a few words. It goes into your Journals.</p>';
+    out += journalFields(k);
+    out += '<button class="btn" style="margin-top:22px" data-act="jsave">Save to my journal</button>';
+    out += '<div class="center" style="margin-top:8px"><button class="link" data-act="jlater">Not now</button></div></div></div>';
+    return out;
+  }
+  function syncOverlay() {
+    var ov = document.getElementById("overlay");
+    if (view.prompt && !ov.firstChild) { ov.innerHTML = sheetHtml(); document.body.style.overflow = "hidden"; bindJournal(); }
+    else if (!view.prompt && ov.firstChild) { ov.innerHTML = ""; document.body.style.overflow = ""; }
+  }
+
+  /* ---------- the flower ---------- */
+  function petalShape(shape, cx, cy, rx, ry, cls, extra) {
+    if (shape === "leaf") {
+      var a = rx * 1.7, b = rx * 1.3;
+      return '<path class="' + cls + '" ' + extra + ' d="M' + cx + ' ' + (cy + ry) + ' C' + (cx + a) + ' ' + (cy + ry * 0.35) + ' ' + (cx + b) + ' ' + (cy - ry * 0.55) + ' ' + cx + ' ' + (cy - ry) + ' C' + (cx - b) + ' ' + (cy - ry * 0.55) + ' ' + (cx - a) + ' ' + (cy + ry * 0.35) + ' ' + cx + ' ' + (cy + ry) + ' Z"/>';
+    }
+    var w = shape === "slim" ? rx * 0.6 : rx, hh = shape === "slim" ? ry * 1.05 : ry;
+    return '<ellipse class="' + cls + '" ' + extra + ' cx="' + cx + '" cy="' + cy + '" rx="' + w.toFixed(2) + '" ry="' + hh.toFixed(2) + '"/>';
+  }
+  function bloom(h, flashIdx) {
+    var G = goalOf(h), t = ti(h), gid = "g" + (++uidc);
+    var R = 74, ry = 42, cy = 130 - R, sp = 2 * Math.PI * R / G, rx = Math.max(3, Math.min(17, sp * 0.62));
+    var s = '<svg viewBox="0 0 260 260" aria-hidden="true"><defs><linearGradient id="' + gid + '" x1="0" y1="1" x2="0" y2="0"><stop offset="0" style="stop-color:var(--hc);stop-opacity:.6"/><stop offset=".55" style="stop-color:var(--hc);stop-opacity:1"/><stop offset="1" style="stop-color:color-mix(in srgb, var(--hc) 62%, #ffffff);stop-opacity:1"/></linearGradient></defs>';
+    for (var i = 0; i < G; i++) {
+      var on = isDone(h, addDays(h.start, i));
+      var cls = "petal" + (on ? " on" : "") + (i === t && !on ? " now" : "") + (i > t ? " future" : "") + (flashIdx === i ? " pop" : "");
+      var st = (on ? "fill:url(#" + gid + ");" : "") + "--pi:" + i;
+      s += '<g transform="rotate(' + (i * 360 / G).toFixed(3) + ' 130 130)">' + petalShape(state.shape, 130, cy, rx, ry, cls, 'style="' + st + '"') + '</g>';
+    }
+    return s + '</svg>';
+  }
+  function flashFor(h) { return view.flash && view.flash.id === h.id ? view.flash.i : -1; }
+
+  /* ---------- delight ---------- */
+  function celebrateColor(col, n) {
+    try {
+      if (REDUCED) return;
+      for (var i = 0; i < n; i++) {
+        var p = document.createElement("span");
+        p.className = "fall";
+        p.style.left = (Math.random() * 100) + "vw";
+        p.style.background = col;
+        p.style.animationDelay = (Math.random() * 0.9) + "s";
+        p.style.opacity = 0.6 + Math.random() * 0.4;
+        document.body.appendChild(p);
+        setTimeout((function (el) { return function () { el.remove(); }; })(p), 3800);
+      }
+    } catch (e) {}
+  }
+  function habitColor(h) { return h.custom || getComputedStyle(document.documentElement).getPropertyValue("--c" + (h.color % 8)).trim() || "#B65CFF"; }
+  function burst(x, y, col) {
+    if (REDUCED) return;
+    for (var i = 0; i < 14; i++) {
+      var a = (i / 14) * Math.PI * 2 + Math.random() * 0.4, dist = 38 + Math.random() * 34, s = document.createElement("span");
+      s.className = "spark";
+      s.style.cssText = "left:" + x + "px;top:" + y + "px;background:" + col + ";--dx:" + (Math.cos(a) * dist).toFixed(1) + "px;--dy:" + (Math.sin(a) * dist).toFixed(1) + "px;box-shadow:0 0 8px " + col;
+      document.body.appendChild(s);
+      setTimeout((function (el) { return function () { el.remove(); }; })(s), 900);
+    }
+  }
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.style.transition = "opacity .4s"; t.style.opacity = "0"; }, 2400);
+    setTimeout(function () { t.remove(); }, 2900);
+  }
+  function countUp(root) {
+    var els = root.querySelectorAll("[data-count]");
+    for (var i = 0; i < els.length; i++) (function (el) {
+      var target = +el.getAttribute("data-count"), suf = el.getAttribute("data-suf") || "";
+      if (REDUCED || !target) return;
+      var t0 = null, dur = 800;
+      el.textContent = "0" + suf;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * e) + suf;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      setTimeout(function () { requestAnimationFrame(step); }, 250);
+    })(els[i]);
+  }
+
+  function toggleDay(h, idx) {
+    var k = addDays(h.start, idx);
+    var e = h.days[k] || (h.days[k] = { done: false, mood: "", note: "" });
+    e.done = !e.done;
+    if (e.done) {
+      view.flash = { id: h.id, i: idx };
+      try { if (navigator.vibrate) navigator.vibrate(12); } catch (x) {}
+      if (cycleDone(h) === goalOf(h)) celebrateColor(habitColor(h), 30);
+    } else e.mood = "";
+    save();
+  }
+
+  /* ---------- personal messages ---------- */
+  function hash(str) { var n = 0; for (var i = 0; i < str.length; i++) n += str.charCodeAt(i); return n; }
+  function nmc() { return state.name ? ", " + state.name : ""; }
+  function fill(tpl, h, n, cd) {
+    return tpl.replace(/\{name\}/gi, state.name || "you").replace(/\{n\}/gi, n).replace(/\{habit\}/gi, h.name).replace(/\{done\}/gi, cd).replace(/\{goal\}/gi, goalOf(h));
+  }
+  function msgFor(h) {
+    var G = goalOf(h), cd = cycleDone(h), n = G - cd, d = isDone(h, today()), t = ti(h), nm = nmc(), NM = state.name ? ", " + state.name.toUpperCase() : "";
+    var seed = diff("2024-01-01", today()) + hash(h.id), pick = seed % 3;
+    if (t >= G) return "Look at that" + nm + ". " + cd + " of " + G + " days. This one is yours.";
+    if (n === 0) return "YOU DID IT" + NM + "! " + G + " DAYS. THIS HABIT IS YOURS NOW.";
+    if (n === 1) return d ? "ONE MORE PETAL TO GO" + NM + ". YOU'RE ALMOST THERE!" : "ONE MORE DAY" + NM + "! TODAY COULD BE THE ONE.";
+    if (state.templates.length) return fill(state.templates[seed % state.templates.length], h, n, cd);
+    if (cd === 0 && t === 0) return "Day one" + nm + ". " + G + " petals to grow, and today is the first.";
+    if (!d && t > 0 && cd > 0 && !isDone(h, addDays(today(), -1))) return "Welcome back" + nm + ". " + n + " more days. No guilt, just the next petal.";
+    if (G >= 10 && (cd === Math.floor(G / 2) || cd === Math.ceil(G / 2))) return d ? "Halfway there" + nm + "! " + n + " more days." : "Halfway there" + nm + ". " + n + " more days and it's yours.";
+    if (d) return ["Today's petal is in" + nm + "! " + n + " more days and it's yours.", "Look at you" + nm + ". Only " + n + " more to go.", cd + " of " + G + " done" + nm + ". Keep going, it's working."][pick];
+    return ["YAY! ONLY " + n + " MORE DAYS AND THIS HABIT IS YOURS" + NM + "!", n + " more petals" + nm + ". Today's could be one of them.", "Only " + n + " more days" + nm + ". You've already done " + cd + "."][pick];
+  }
+
+  /* ---------- reminders ---------- */
+  function permission() { try { return ("Notification" in window) ? Notification.permission : "unsupported"; } catch (e) { return "unsupported"; } }
+  function remBody(h) { return fill(h.remMsg || "A petal is waiting for you, {name}.", h, goalOf(h) - cycleDone(h), cycleDone(h)); }
+  function notify(h, bodyOverride) {
+    if (permission() !== "granted") return;
+    var title = label(h), opts = { body: bodyOverride || remBody(h), tag: "t21-" + h.id, icon: "icon-192.png", badge: "icon-192.png" };
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+        navigator.serviceWorker.getRegistration().then(function (reg) {
+          if (reg && reg.showNotification) reg.showNotification(title, opts); else new Notification(title, opts);
+        }).catch(function () { try { new Notification(title, opts); } catch (e) {} });
+      } else new Notification(title, opts);
+    } catch (e) {}
+  }
+  function getFired() { try { return JSON.parse(localStorage.getItem(FIRED) || "{}"); } catch (e) { return {}; } }
+  function dueNow() {
+    var tk = today(), hh = nowHHMM(), dow = new Date().getDay(), fired = getFired(), clean = {};
+    Object.keys(fired).forEach(function (k) { if (k.indexOf(tk) === 0) clean[k] = 1; });
+    active().forEach(function (h) {
+      if (isDone(h, tk)) return;
+      h.reminders.forEach(function (r) {
+        if (r.days.indexOf(dow) < 0 || r.time !== hh) return;
+        var key = tk + r.id;
+        if (clean[key]) return;
+        clean[key] = 1; notify(h);
+      });
+    });
+    try { localStorage.setItem(FIRED, JSON.stringify(clean)); } catch (e) {}
+  }
+  function overdue() {
+    var hh = nowHHMM(), dow = new Date().getDay(), res = [];
+    pending().forEach(function (h) {
+      var past = h.reminders.filter(function (r) { return r.days.indexOf(dow) >= 0 && r.time <= hh; }).sort(function (a, b) { return a.time < b.time ? 1 : -1; })[0];
+      if (past) res.push({ h: h, time: past.time });
+    });
+    return res;
+  }
+  function download(name, text, mime) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: mime }));
+    a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function icsText(s) { return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n"); }
+  function d8(k) { return k.replace(/-/g, ""); }
+  function buildIcs(list) {
+    var L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Twenty-one//EN", "CALSCALE:GREGORIAN"], stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z", count = 0;
+    list.forEach(function (h) {
+      var until = addDays(h.start, goalOf(h) - 1);
+      if (until < today()) return;
+      h.reminders.forEach(function (r) {
+        if (!r.days.length) return;
+        var startKey = h.start > today() ? h.start : today();
+        L.push("BEGIN:VEVENT", "UID:" + h.id + "-" + r.id + "@twentyone", "DTSTAMP:" + stamp,
+          "DTSTART:" + d8(startKey) + "T" + r.time.replace(":", "") + "00", "DURATION:PT10M",
+          "RRULE:FREQ=WEEKLY;BYDAY=" + r.days.map(function (d) { return ICSD[d]; }).join(",") + ";UNTIL=" + d8(until) + "T235959",
+          "SUMMARY:" + icsText(label(h)), "DESCRIPTION:" + icsText(remBody(h)),
+          "BEGIN:VALARM", "TRIGGER:PT0S", "ACTION:DISPLAY", "DESCRIPTION:" + icsText(label(h)), "END:VALARM", "END:VEVENT");
+        count++;
+      });
+    });
+    L.push("END:VCALENDAR");
+    return { text: L.join("\r\n"), count: count };
+  }
+  function exportIcs(list, fname) {
+    var r = buildIcs(list);
+    if (!r.count) { toast("Add a reminder first, then I can export it."); return; }
+    download(fname, r.text, "text/calendar"); toast("Calendar file saved. Open it to add your reminders.");
+  }
+
+  /* ---------- theme ---------- */
+  function applyTheme() {
+    var r = document.documentElement;
+    if (state.pal && state.pal !== "auto") r.setAttribute("data-pal", state.pal); else r.removeAttribute("data-pal");
+    try {
+      var c = getComputedStyle(document.body).backgroundColor, m = document.querySelector('meta[name="theme-color"]');
+      if (m && c) m.setAttribute("content", c);
+    } catch (e) {}
+  }
+
+  /* ---------- render ---------- */
+  function render(forceEnter) {
+    var app = document.getElementById("app");
+    var h = view.screen === "habit" ? get(view.id) : null;
+    if (view.screen === "habit" && !h) view.screen = "today";
+    if (view.screen === "today" && !state.name && !state.skipWelcome && !state.habits.length) view.screen = "welcome";
+    if (view.screen === "form" && !view.draft) view.screen = "today";
+    var sk = view.screen + (view.id || "") + (view.screen === "entry" ? view.entryDate : "");
+    var changed = sk !== lastScreenKey || forceEnter === true;
+    app.className = changed ? "enter" : "";
+    if (view.screen === "welcome") renderWelcome(app);
+    else if (view.screen === "today") renderToday(app);
+    else if (view.screen === "habit") renderHabit(app, h);
+    else if (view.screen === "progress") renderProgress(app);
+    else if (view.screen === "journals") renderJournals(app);
+    else if (view.screen === "entry") renderEntry(app);
+    else if (view.screen === "form") renderForm(app);
+    else if (view.screen === "you") renderYou(app);
+    renderTabs();
+    if (sk !== lastScreenKey) { window.scrollTo(0, 0); lastScreenKey = sk; }
+    if (changed) {
+      for (var i = 0; i < app.children.length; i++) app.children[i].style.setProperty("--i", i);
+      countUp(app);
+    }
+    view.flash = null;
+    syncOverlay();
+    bindJournal();
+  }
+
+  function renderTabs() {
+    var s = view.screen, tabs = document.getElementById("tabs");
+    if (s === "welcome" || s === "form") { tabs.style.display = "none"; return; }
+    tabs.style.display = "";
+    var t = '<div>';
+    t += '<button class="tab' + (s === "today" || s === "habit" ? " on" : "") + '" data-act="go" data-to="today">' + ICON_TODAY + 'Today</button>';
+    t += '<button class="tab' + (s === "journals" || s === "entry" ? " on" : "") + '" data-act="go" data-to="journals">' + ICON_BOOK + 'Journals</button>';
+    t += '<button class="tab" data-act="new" aria-label="New habit"><span class="plus">' + ICON_PLUS + '</span></button>';
+    t += '<button class="tab' + (s === "progress" ? " on" : "") + '" data-act="go" data-to="progress">' + ICON_PROG + 'Progress</button>';
+    t += '<button class="tab' + (s === "you" ? " on" : "") + '" data-act="go" data-to="you">' + ICON_YOU + 'You</button>';
+    tabs.innerHTML = t + '</div>';
+  }
+
+  function renderWelcome(app) {
+    var out = '<div class="eyebrow" style="margin-top:36px">Twenty-one</div><h1 class="hello disp" style="font-size:56px">Hi, I\'m your <em>garden</em>.</h1>';
+    out += '<p class="muted" style="font-size:18px;margin:0 0 28px">Every day you show up for yourself, a petal grows. What should I call you?</p>';
+    out += '<input type="text" id="who" maxlength="30" placeholder="Your name" autocomplete="given-name" value="' + esc(view.draftName || "") + '">';
+    out += '<button class="btn" style="margin-top:16px" data-act="welcome">Continue</button>';
+    out += '<div class="center" style="margin-top:12px"><button class="link" data-act="skipwelcome">Skip for now</button></div>';
+    app.innerHTML = out;
+    document.getElementById("who").addEventListener("input", function (e) { view.draftName = e.target.value; });
+  }
+
+  function renderToday(app) {
+    var now = new Date(), hr = now.getHours();
+    var greet = hr < 5 ? "Still up" : hr < 12 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
+    var doy = diff("2024-01-01", today());
+    var out = '<div class="eyebrow">' + longDate(today()) + '</div>';
+    out += '<h1 class="hello disp">' + greet + (state.name ? ",<br><em>" + esc(state.name) + "</em>" : "") + '</h1>';
+
+    if (!state.habits.length) {
+      out += '<h2 class="disp" style="font-size:36px;margin:40px 0 8px">Plant your first habit</h2>';
+      out += '<p class="muted" style="margin:0 0 22px">Pick one small thing. Every day you do it grows one petal. When the flower is full, it\'s yours.</p>';
+      out += '<button class="btn" data-act="new">Plant a habit</button>';
+      app.innerHTML = out; return;
+    }
+
+    var act = active(), left = pending(), doneToday = act.length - left.length;
+    out += '<div class="dots">';
+    act.forEach(function (h) { out += '<i class="' + (isDone(h, today()) ? "on" : "") + '" style="' + hcStyle(h) + '"></i>'; });
+    var msg = !act.length ? "Everything has bloomed" : doneToday === act.length ? "All done today. Rest well." : doneToday + " of " + act.length + " done today";
+    out += '<span>' + msg + '</span></div>';
+
+    if (act.length) {
+      var feat = left.length ? left[doy % left.length] : act[doy % act.length];
+      out += '<div style="' + hcStyle(feat) + '"><div class="msg">' + esc(msgFor(feat)) + '</div>';
+      if (feat.why) out += '<p class="why">Why you started: “' + esc(feat.why) + '”</p>';
+      out += '</div>';
+    }
+    var mine = state.affirm || [], useMine = mine.length && doy % 2 === 0, pool = useMine ? mine : LINES;
+    out += '<p class="line">' + esc(pool[doy % pool.length]) + '</p>';
+
+    var je = jget(today()), jfilled = !jempty(je), mo = jfilled && je.mood ? moodOf(je.mood) : null;
+    out += '<button class="jtoday" data-act="jopen" data-d="' + today() + '"><span class="jt"><span class="eyebrow">Journal</span><b>' + (jfilled ? "Today's entry" : "Describe your day") + '</b><span class="pv">' + (jfilled ? esc(je.text || (mo ? "Feeling " + mo.l.toLowerCase() : "Tap to add more")) : "A few taps is enough.") + '</span></span><span class="pen">' + (mo ? mo.e : "✎") + '</span></button>';
+
+    overdue().slice(0, 2).forEach(function (o) {
+      out += '<div class="nudge">' + esc(label(o.h)) + ' was due at ' + fmtTime(o.time) + (state.name ? ", " + esc(state.name) : "") + '. Your petal is waiting.</div>';
+    });
+
+    out += '<div class="garden' + (state.habits.length === 1 ? " one" : "") + '">';
+    state.habits.forEach(function (h, idx) {
+      var G = goalOf(h), fin = ti(h) >= G, d = isDone(h, today()), cs = curStreak(h), n = G - cycleDone(h);
+      var sub = fin ? "Bloomed · " + cycleDone(h) + " of " + G : n + (n === 1 ? " more day" : " more days") + (cs > 0 ? " · " + cs + "-day streak" : "");
+      var hub = h.emoji ? esc(h.emoji) : '<span data-count="' + cycleDone(h) + '">' + cycleDone(h) + '</span>';
+      out += '<div class="tile" style="' + hcStyle(h) + ';--ti:' + idx + '"><button class="tilemain" data-act="open" data-id="' + h.id + '"><div class="bwrap">' + bloom(h, flashFor(h)) + '<span class="hubn">' + hub + '</span></div><div class="tname">' + esc(h.name) + '</div><div class="tsub">' + sub + '</div></button>';
+      if (fin) out += '<button class="regrow" data-act="regrow" data-id="' + h.id + '">Grow again</button>';
+      else out += '<button class="tick' + (d ? " on" : "") + (flashFor(h) >= 0 ? " pop" : "") + '" data-act="tick" data-id="' + h.id + '" aria-label="' + (d ? "Undo " : "Mark done: ") + esc(h.name) + '">' + CHECK + '</button>';
+      out += '</div>';
+    });
+    out += '</div><button class="add-row" data-act="new">Plant another habit</button>';
+    app.innerHTML = out;
+  }
+
+  function renderHabit(app, h) {
+    var G = goalOf(h), t = ti(h), fin = t >= G, d = isDone(h, today()), cd = cycleDone(h), f = followed(h);
+    var out = '<div class="top"><button class="link" data-act="go" data-to="today">Back</button><button class="link strong" data-act="edit" data-id="' + h.id + '">Edit</button></div>';
+    out += '<div style="' + hcStyle(h) + '">';
+    out += '<h1 class="title disp">' + (h.emoji ? esc(h.emoji) + " " : "") + esc(h.name) + '</h1>';
+    out += '<div class="eyebrow">' + (fin ? G + " days are up" : "Day " + (t + 1) + " of " + G) + (h.blooms ? " · bloomed " + h.blooms + (h.blooms === 1 ? " time" : " times") : "") + '</div>';
+    out += '<div class="msg big">' + esc(msgFor(h)) + '</div>';
+    if (h.why) out += '<p class="why">Why you started: “' + esc(h.why) + '”</p>';
+    out += '<div class="hero">' + bloom(h, flashFor(h)) + '<div class="hub"><b data-count="' + cd + '">' + cd + '</b><span>of ' + G + '</span></div></div>';
+
+    if (!fin) out += '<button class="btn ' + (d ? "done" : "hc") + '" data-act="tick" data-id="' + h.id + '">' + (d ? "Done today · tap to undo" : "Mark today done") + '</button>';
+
+    out += '<div class="stats"><div class="stat"><b data-count="' + curStreak(h) + '">' + curStreak(h) + '</b><span>day streak</span></div><div class="stat"><b data-count="' + bestStreak(h) + '">' + bestStreak(h) + '</b><span>best streak</span></div><div class="stat"><b data-count="' + f.pct + '" data-suf="%">' + f.pct + '%</b><span>followed</span></div></div>';
+
+    if (fin) out += '<div class="banner"><h4>In bloom</h4><p>You showed up ' + cd + ' of ' + G + ' days. Grow another ' + G + ' whenever you feel ready. Your streak carries over.</p><button class="btn hc" data-act="regrow" data-id="' + h.id + '">Grow another ' + G + '</button></div>';
+    else if (cd === G) out += '<div class="banner"><h4>All ' + G + ' petals</h4><p>This one is in full bloom.</p></div>';
+
+    out += '<h2 class="h3 disp">Your ' + G + ' days</h2><div class="days">';
+    for (var i = 0; i < G; i++) {
+      var k = addDays(h.start, i), e = h.days[k], on = e && e.done;
+      var cls = "day" + (on ? " on" : "") + (i === t ? " today" : "") + (i < t && !on ? " miss" : "") + (i > t ? " future" : "") + (i === view.sel ? " sel" : "");
+      var mo = on && e.mood ? moodOf(e.mood) : null;
+      out += '<button class="' + cls + '" data-act="sel" data-i="' + i + '"' + (i > t ? " disabled" : "") + ' aria-label="Day ' + (i + 1) + (on ? ", done" : "") + '">' + (mo ? mo.e : (i + 1)) + '</button>';
+    }
+    out += '</div>';
+
+    var sel = Math.min(view.sel, G - 1), sk = addDays(h.start, sel), se = h.days[sk] || { done: false, mood: "", note: "" }, isT = sel === t;
+    out += '<div class="panel"><h4>' + (isT ? "Today" : "Day " + (sel + 1)) + ' · ' + pretty(sk) + '</h4>';
+    if (sel > t) out += '<p>This day opens on ' + pretty(sk) + '.</p>';
+    else {
+      if (!isT) out += '<p>' + (se.done ? "Done. That counts." : "Missed this one? You can still mark it.") + '</p><button class="btn ghost" style="margin-bottom:14px" data-act="toggle-sel">' + (se.done ? "Done · tap to undo" : "Mark as done") + '</button>';
+      else out += '<p>' + (se.done ? "Nice" + nmc() + ". How did it feel?" : "Mark today done to log how it felt.") + '</p>';
+      if (se.done) {
+        out += '<div class="moods">';
+        MOODS.forEach(function (m) { out += '<button class="mood' + (se.mood === m.id ? " on" : "") + '" data-act="mood" data-m="' + m.id + '"><span>' + m.e + '</span><small>' + m.l + '</small></button>'; });
+        out += '</div>';
+      }
+      out += '<textarea id="note" placeholder="A note for this day (optional)" aria-label="Note for this day">' + esc(se.note || "") + '</textarea>';
+    }
+    out += '</div></div>';
+    app.innerHTML = out;
+
+    var note = document.getElementById("note");
+    if (note) note.addEventListener("input", function () {
+      var e = h.days[sk] || (h.days[sk] = { done: false, mood: "", note: "" });
+      e.note = note.value; save();
+    });
+  }
+
+  function renderProgress(app) {
+    var out = '<div class="eyebrow">Your garden in numbers</div><h1 class="hello disp">Progress</h1>';
+    if (!state.habits.length) {
+      out += '<p class="muted">Plant a habit and your progress will grow here.</p><button class="btn" style="margin-top:18px" data-act="new">Plant a habit</button>';
+      app.innerHTML = out; return;
+    }
+    var cur = 0, best = 0, checks = 0, blooms = 0, counts = {};
+    state.habits.forEach(function (h) {
+      cur = Math.max(cur, curStreak(h)); best = Math.max(best, bestStreak(h)); checks += totalChecks(h); blooms += h.blooms + (ti(h) >= goalOf(h) ? 1 : 0);
+      Object.keys(h.days).forEach(function (k) { var e = h.days[k]; if (e.done && e.mood) counts[e.mood] = (counts[e.mood] || 0) + 1; });
+    });
+    out += '<div class="bigstats"><div><b data-count="' + cur + '">' + cur + '</b><span>current streak</span></div><div><b data-count="' + best + '">' + best + '</b><span>best streak</span></div><div><b data-count="' + checks + '">' + checks + '</b><span>total check-ins</span></div><div><b data-count="' + blooms + '">' + blooms + '</b><span>blooms</span></div></div>';
+
+    var topId = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })[0];
+    if (topId) { var tm = moodOf(topId); out += '<p class="msg" style="font-size:28px;margin:22px 0 0">' + tm.e + ' You feel ' + tm.l.toLowerCase() + ' most often after a check-in' + nmc() + '.</p>'; }
+    var jn = jkeys().length;
+    if (jn) out += '<p class="line">You have written ' + jn + (jn === 1 ? " journal entry" : " journal entries") + ' so far.</p>';
+
+    out += '<h2 class="h3 disp">Last 5 weeks</h2><div><div class="wk">' + DAYL.map(function (x) { return '<span>' + x + '</span>'; }).join("") + '</div><div class="heat" style="margin-top:8px">';
+    var t = today(), startK = addDays(t, -(parse(t).getDay() + 28));
+    for (var i = 0; i < 35; i++) {
+      var k = addDays(startK, i);
+      if (k > t) { out += '<span class="hcell ghost"></span>'; continue; }
+      var ex = state.habits.filter(function (h) { return h.created <= k || h.start <= k; });
+      var dn = ex.filter(function (h) { return isDone(h, k); }).length;
+      out += '<span class="hcell' + (k === t ? " now" : "") + (dn > 0 ? " has" : "") + '">' + (dn > 0 ? '<i style="--a:' + (0.3 + 0.7 * dn / ex.length).toFixed(2) + ';--hi:' + i + '"></i>' : '') + '</span>';
+    }
+    out += '</div><p class="small" style="margin-top:10px">Brighter days mean more of your habits got done.</p></div>';
+
+    out += '<div><h2 class="h3 disp">How you followed</h2>';
+    state.habits.forEach(function (h) {
+      var f = followed(h);
+      out += '<button class="ft" style="' + hcStyle(h) + '" data-act="open" data-id="' + h.id + '"><div class="r"><span class="n">' + esc(label(h)) + '</span><span class="small">' + f.pct + '%</span></div><div class="bar"><i style="width:' + f.pct + '%"></i></div><span class="small">' + f.done + ' of ' + f.elapsed + ' days · ' + curStreak(h) + '-day streak · best ' + bestStreak(h) + '</span></button>';
+    });
+    out += '</div>';
+    app.innerHTML = out;
+  }
+
+  /* ---------- journals ---------- */
+  function renderJournals(app) {
+    var keys = jkeys(), tk = today(), have = !jempty(jget(tk));
+    var out = '<div class="eyebrow">Your story so far</div><h1 class="hello disp">Journals</h1>';
+    if (keys.length) out += '<p class="muted" style="margin:0">' + keys.length + (keys.length === 1 ? " entry" : " entries") + (jstreak() > 1 ? " · " + jstreak() + " days in a row" : "") + '</p>';
+    out += '<button class="btn" style="margin-top:20px" data-act="jopen" data-d="' + tk + '">' + (have ? "Edit today's entry" : "Describe today") + '</button>';
+
+    if (!keys.length) {
+      app.innerHTML = out + '<p class="msg" style="font-size:28px;margin-top:34px">Nothing here yet' + nmc() + '.</p><p class="muted">Each day the app will ask how it went. Your entries will collect here.</p>';
+      return;
+    }
+    var used = {};
+    keys.forEach(function (k) { var m = jget(k).mood; if (m) used[m] = 1; });
+    var uk = MOODS.filter(function (m) { return used[m.id]; });
+    if (uk.length > 1) {
+      out += '<div class="chips"><button class="chip' + (!view.jfilter ? " on" : "") + '" data-act="jfilter" data-m="">All</button>';
+      uk.forEach(function (m) { out += '<button class="chip' + (view.jfilter === m.id ? " on" : "") + '" data-act="jfilter" data-m="' + m.id + '">' + m.e + ' ' + m.l + '</button>'; });
+      out += '</div>';
+    }
+    var shown = keys.filter(function (k) { return !view.jfilter || jget(k).mood === view.jfilter; });
+    out += '<div class="jlist">';
+    var lastMonth = "", si = 0;
+    shown.forEach(function (k) {
+      var e = jget(k), d = parse(k), mon = d.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+      if (mon !== lastMonth) { out += '<div class="eyebrow jmonth">' + mon + '</div>'; lastMonth = mon; }
+      var mo = e.mood ? moodOf(e.mood) : null, tags = e.tags.map(function (id) { return TAGS.filter(function (t) { return t.id === id; })[0]; }).filter(Boolean);
+      var nd = doneOn(k).length;
+      out += '<button class="jcard" style="--si:' + Math.min(si++, 12) + '" data-act="jopen" data-d="' + k + '"><div class="jdate"><b>' + d.getDate() + '</b><span>' + d.toLocaleDateString(undefined, { weekday: "short" }) + '</span></div><div class="jbody">';
+      out += '<p>' + (e.text ? esc(e.text) : '<span class="muted">' + (tags.length ? "Shaped by " + tags.map(function (t) { return t.l.toLowerCase(); }).join(", ") : "A quiet day.") + '</span>') + '</p>';
+      var meta = [];
+      if (e.text && tags.length) meta.push(tags.map(function (t) { return t.e; }).join(" "));
+      if (nd) meta.push(nd + (nd === 1 ? " petal" : " petals"));
+      if (meta.length) out += '<div class="jt2">' + meta.join(" · ") + '</div>';
+      out += '</div>' + (mo ? '<span class="jmoodface">' + mo.e + '</span>' : '') + '</button>';
+    });
+    out += '</div>';
+    if (!shown.length) out += '<p class="muted" style="margin-top:20px">No entries with that feeling yet.</p>';
+    app.innerHTML = out;
+  }
+
+  function renderEntry(app) {
+    var k = view.entryDate, isT = k === today(), done = doneOn(k);
+    var out = '<div class="top"><button class="link" data-act="jback">Journals</button><span></span></div>';
+    out += '<div class="jnav"><button class="arrow" data-act="jnav" data-dir="-1" aria-label="Previous day">‹</button><h1 class="disp">' + (isT ? "Today" : pretty(k)) + '</h1><button class="arrow" data-act="jnav" data-dir="1" aria-label="Next day"' + (isT ? " disabled" : "") + '>›</button></div>';
+    out += '<div class="eyebrow" style="text-align:center">' + longDate(k) + '</div>';
+    out += '<div class="jlab">' + (done.length ? "You tended" : "No habits logged this day") + '</div>';
+    if (done.length) { out += '<div class="tended">'; done.forEach(function (h) { out += '<span style="' + hcStyle(h) + '">' + esc(label(h)) + '</span>'; }); out += '</div>'; }
+    out += journalFields(k);
+    if (!jempty(jget(k))) out += '<div class="center"><button class="btn danger sm" data-act="jdel">' + (view.confirmDel ? "Tap again to delete for good" : "Delete this entry") + '</button></div>';
+    app.innerHTML = out;
+  }
+
+  /* ---------- habit form (new + edit) ---------- */
+  function blankDraft() { return { id: null, name: "", emoji: "", why: "", color: state.habits.length % 8, custom: "", goal: 21, start: today(), remMsg: "", reminders: [] }; }
+  function draftFrom(h) { return JSON.parse(JSON.stringify({ id: h.id, name: h.name, emoji: h.emoji, why: h.why, color: h.color, custom: h.custom, goal: goalOf(h), start: h.start, remMsg: h.remMsg, reminders: h.reminders })); }
+  function openForm(h) { view.draft = h ? draftFrom(h) : blankDraft(); view.screen = "form"; view.confirmDel = false; }
+  function syncDraft() {
+    var d = view.draft; if (!d) return;
+    var v = function (id) { var el = document.getElementById(id); return el ? el.value : null; };
+    if (v("f-name") !== null) d.name = v("f-name");
+    if (v("f-emoji") !== null) d.emoji = v("f-emoji");
+    if (v("f-why") !== null) d.why = v("f-why");
+    if (v("f-start")) d.start = v("f-start");
+    if (v("f-rem") !== null) d.remMsg = v("f-rem");
+    if (v("f-goal")) d.goal = Math.max(3, Math.min(100, parseInt(v("f-goal"), 10) || d.goal));
+    var rt = document.querySelectorAll("[data-rt]");
+    for (var i = 0; i < rt.length; i++) { var r = d.reminders.filter(function (x) { return x.id === rt[i].getAttribute("data-rt"); })[0]; if (r && rt[i].value) r.time = rt[i].value; }
+  }
+  function renderForm(app) {
+    var d = view.draft, isEdit = !!d.id, existing = isEdit ? get(d.id) : null;
+    if (d.start > today()) d.start = today();
+    var pv = { id: d.id || "new", start: d.start, goal: d.goal, color: d.color, custom: d.custom, days: {} };
+    if (existing) pv.days = existing.days; else for (var i = 0; i < Math.min(4, d.goal); i++) pv.days[addDays(d.start, i)] = { done: true };
+    var out = '<div class="top"><button class="link" data-act="cancel">Cancel</button><button class="link strong" data-act="save">Save</button></div>';
+    out += '<h1 class="hello disp" style="font-size:42px">' + (isEdit ? "Edit habit" : "Plant a <em>new</em> habit") + '</h1>';
+    out += '<div class="formhero" style="' + hcStyle(d) + '">' + bloom(pv, -1) + '</div>';
+
+    out += '<div><label class="l" for="f-name">What will you do?</label><input type="text" id="f-name" maxlength="60" placeholder="e.g. Stretch for 10 minutes" autocomplete="off" value="' + esc(d.name) + '">';
+    if (!isEdit && !d.name) { out += '<div class="chips">'; SUGGESTIONS.forEach(function (s) { out += '<button class="chip" data-act="suggest" data-text="' + esc(s) + '">' + esc(s) + '</button>'; }); out += '</div>'; }
+    out += '</div>';
+
+    out += '<div style="' + hcStyle(d) + '"><label class="l" for="f-emoji">Emoji <span class="muted" style="font-weight:500">(tap one, or type your own)</span></label><div class="emojis">';
+    EMOJIS.forEach(function (e) { out += '<button class="emo' + (d.emoji === e ? " on" : "") + '" data-act="femoji" data-e="' + e + '" aria-label="Emoji ' + e + '">' + e + '</button>'; });
+    out += '</div><input type="text" id="f-emoji" maxlength="4" placeholder="🌿" style="width:110px;font-size:22px;text-align:center;margin-top:10px" value="' + esc(d.emoji) + '"></div>';
+
+    out += '<div><label class="l" for="f-why">Why does it matter to you?</label><input type="text" id="f-why" maxlength="140" placeholder="e.g. I want to feel calmer in the morning" autocomplete="off" value="' + esc(d.why) + '"></div>';
+
+    out += '<div><label class="l">Color</label><div class="swatches">';
+    for (var c = 0; c < 8; c++) out += '<button class="sw' + (!d.custom && c === d.color ? " on" : "") + '" style="--hc:var(--c' + c + ')" data-act="fcolor" data-c="' + c + '" aria-label="Color ' + (c + 1) + '">' + CHECK + '</button>';
+    out += '<span class="pickwrap' + (d.custom ? " on" : "") + '"><input type="color" id="f-custom" value="' + (d.custom || "#b65cff") + '" aria-label="Pick any color"></span></div></div>';
+
+    out += '<div><label class="l">How many days?</label><div class="chips">';
+    GOALS.forEach(function (g) { out += '<button class="chip' + (d.goal === g ? " on" : "") + '" data-act="fgoal" data-g="' + g + '">' + g + '</button>'; });
+    out += '</div><div class="stepper"><button class="arrow" data-act="fstep" data-s="-1" aria-label="One day fewer">−</button><input type="number" id="f-goal" min="3" max="100" value="' + d.goal + '"><button class="arrow" data-act="fstep" data-s="1" aria-label="One day more">+</button><span class="hint" style="margin:0">3 to 100. 21 is the classic.</span></div></div>';
+
+    out += '<div><label class="l" for="f-start">Started on</label><input type="date" id="f-start" max="' + today() + '" value="' + d.start + '"></div>';
+
+    out += '<div><h2 class="sec disp">Reminders</h2><p class="hint" style="margin-top:0">Add as many as you like, at any time, on any days.</p>';
+    d.reminders.forEach(function (r) {
+      out += '<div class="rem"><div class="r1"><input type="time" data-rt="' + r.id + '" value="' + r.time + '" aria-label="Reminder time"><button class="x" data-act="rdel" data-r="' + r.id + '" aria-label="Remove reminder">×</button></div><div class="chips qt">';
+      QTIMES.forEach(function (q) { out += '<button class="chip' + (r.time === q[0] ? " on" : "") + '" data-act="rtime" data-r="' + r.id + '" data-t="' + q[0] + '">' + q[1] + '</button>'; });
+      out += '</div><div class="dchips">';
+      for (var x = 0; x < 7; x++) out += '<button class="dchip' + (r.days.indexOf(x) >= 0 ? " on" : "") + '" data-act="rday" data-r="' + r.id + '" data-d="' + x + '" aria-label="' + ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][x] + '">' + DAYL[x] + '</button>';
+      out += '</div></div>';
+    });
+    out += '<button class="btn ghost sm" style="margin-top:12px" data-act="radd">Add a reminder</button>';
+    out += '<label class="l" for="f-rem">Reminder message <span class="muted" style="font-weight:500">(optional)</span></label><input type="text" id="f-rem" maxlength="120" placeholder="A petal is waiting for you, {name}." value="' + esc(d.remMsg) + '"><p class="hint">Use {name}, {habit} and {n} (days left).</p>';
+    if (d.reminders.length) out += '<div class="chips"><button class="chip" data-act="ics-one">Add to my phone calendar</button>' + (permission() === "default" ? '<button class="chip" data-act="perm">Allow notifications</button>' : permission() === "granted" ? '<button class="chip" data-act="test">Send a test</button>' : '') + '</div><p class="hint">The calendar option is the most reliable way to get a reminder on your phone, even when this app is closed. Notifications only fire while the app is open or running in the background.</p>';
+    out += '</div>';
+
+    out += '<div><button class="btn" style="margin-top:34px" data-act="save">' + (isEdit ? "Save changes" : "Start today") + '</button>';
+    if (isEdit) out += '<div class="center"><button class="btn danger sm" data-act="delete">' + (view.confirmDel ? "Tap again to delete for good" : "Delete this habit") + '</button></div>';
+    out += '</div>';
+    app.innerHTML = out;
+
+    document.getElementById("f-custom").addEventListener("change", function (e) { syncDraft(); d.custom = e.target.value; render(); });
+    document.getElementById("f-goal").addEventListener("change", function () { syncDraft(); render(); });
+  }
+
+  function saveDraft() {
+    syncDraft();
+    var d = view.draft, name = d.name.trim();
+    if (!name) { var el = document.getElementById("f-name"); if (el) el.focus(); return false; }
+    var fields = { name: name, emoji: d.emoji.trim(), why: d.why.trim(), color: d.color, custom: d.custom, goal: d.goal, start: d.start || today(), remMsg: d.remMsg.trim(), reminders: d.reminders };
+    var h;
+    if (d.id) { h = get(d.id); Object.keys(fields).forEach(function (k) { h[k] = fields[k]; }); }
+    else { h = { id: "h" + Date.now(), created: today(), blooms: 0, days: {} }; Object.keys(fields).forEach(function (k) { h[k] = fields[k]; }); state.habits.push(h); }
+    save(); view.screen = "habit"; view.id = h.id; view.sel = Math.max(0, Math.min(goalOf(h) - 1, ti(h))); view.draft = null;
+    return true;
+  }
+
+  /* ---------- you ---------- */
+  function renderYou(app) {
+    var out = '<div class="eyebrow">Settings</div><h1 class="hello disp">Make it <em>yours</em></h1>';
+    out += '<div><label class="l" for="nm" style="margin-top:20px">What should I call you?</label><input type="text" id="nm" maxlength="30" placeholder="Your name" value="' + esc(state.name) + '"></div>';
+
+    out += '<div><h2 class="sec disp">Look and feel</h2><label class="l" style="margin-top:12px">Theme</label><div class="pals">';
+    PALS.forEach(function (p) {
+      var dd = PALDATA[p[0]], pb, pa, dots;
+      if (p[0] === "auto") { pb = "linear-gradient(110deg,#0D0820 50%,#F6F3FF 50%)"; pa = "#F4C95D"; dots = PDOTS.vd; }
+      else { pb = dd[0]; pa = dd[1]; dots = PDOTS[dd[2]]; }
+      out += '<button class="pal' + (state.pal === p[0] ? " on" : "") + '" data-act="pal" data-v="' + p[0] + '" aria-label="' + p[1] + ' theme" style="--pb:' + pb + ';--pa:' + pa + '"><span class="pv">' + dots.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("") + '<b></b></span>' + p[1] + '</button>';
+    });
+    out += '</div><label class="l">Petal shape</label><div class="chips">';
+    SHAPES.forEach(function (p) { out += '<button class="chip' + (state.shape === p[0] ? " on" : "") + '" data-act="shape" data-v="' + p[0] + '">' + p[1] + '</button>'; });
+    out += '</div></div>';
+
+    out += '<div><h2 class="sec disp">Journal</h2><p class="hint" style="margin-top:4px">Each new day, the app asks you to describe it when you open it.</p><div class="chips"><button class="chip' + (state.journalAsk ? " on" : "") + '" data-act="jask">' + (state.journalAsk ? "Asking me every day" : "Not asking") + '</button></div></div>';
+
+    out += '<div><h2 class="sec disp">Your words</h2>';
+    out += '<label class="l" for="af" style="margin-top:12px">Encouragement</label><textarea id="af" placeholder="One per line. They join the daily lines on Today." style="min-height:100px">' + esc((state.affirm || []).join("\n")) + '</textarea>';
+    out += '<label class="l" for="tp">Countdown messages</label><textarea id="tp" placeholder="One per line, e.g. {n} more days, {name}! {habit} is almost yours." style="min-height:100px">' + esc((state.templates || []).join("\n")) + '</textarea><p class="hint">Use {name}, {n} (days left), {habit}, {done} and {goal}. If you add any, they replace the built-in ones. The final days still get their special messages.</p></div>';
+
+    out += '<div><h2 class="sec disp">Reminders</h2><p class="hint" style="margin-top:4px">Each habit has its own reminders. Open a habit and tap Edit.</p><div class="chips">';
+    var p = permission();
+    if (p === "default") out += '<button class="chip" data-act="perm">Allow notifications</button>';
+    else if (p === "granted") out += '<span class="chip on">Notifications allowed</span>';
+    else if (p === "denied") out += '<span class="chip">Notifications blocked in browser settings</span>';
+    out += '<button class="chip" data-act="ics-all">Add all reminders to my phone calendar</button></div></div>';
+
+    out += '<div><h2 class="sec disp">Your data</h2><p class="hint" style="margin-top:4px">Everything lives on this device. Save a backup now and then.</p><div class="chips"><button class="chip" data-act="export">Save a backup</button><button class="chip" data-act="import">Restore from backup</button></div></div>';
+    app.innerHTML = out;
+
+    document.getElementById("nm").addEventListener("input", function (e) { state.name = e.target.value.trim(); save(); });
+    document.getElementById("af").addEventListener("input", function (e) { state.affirm = e.target.value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean); save(); });
+    document.getElementById("tp").addEventListener("input", function (e) { state.templates = e.target.value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean); save(); });
+  }
+
+  /* ---------- events ---------- */
+  function leaveEntry() { if (view.screen === "entry") jclean(view.entryDate); }
+  document.addEventListener("click", function (ev) {
+    var t = ev.target.closest("[data-act]");
+    if (!t) return;
+    var act = t.getAttribute("data-act"), id = t.getAttribute("data-id"), h;
+    var d = view.draft;
+
+    /* journal chips update in place so the keyboard and text stay put */
+    if (act === "jmood") {
+      var je = jensure(view.jdate), m0 = t.getAttribute("data-m"); je.mood = je.mood === m0 ? "" : m0; save();
+      document.getElementById("jmoods").innerHTML = moodsHtml(view.jdate); return;
+    }
+    if (act === "jtag") {
+      var jt = jensure(view.jdate), tg = t.getAttribute("data-t"), ix0 = jt.tags.indexOf(tg);
+      if (ix0 >= 0) jt.tags.splice(ix0, 1); else jt.tags.push(tg);
+      save(); document.getElementById("jtags").innerHTML = tagsHtml(view.jdate); return;
+    }
+    if (act === "jstart") {
+      var ta = document.getElementById("jtext"), s = STARTERS[+t.getAttribute("data-i")];
+      ta.value = (ta.value && !/\s$/.test(ta.value) ? ta.value + "\n" : ta.value) + s + " ";
+      jensure(view.jdate).text = ta.value; save(); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); return;
+    }
+    if (act === "jsave" || act === "jlater") {
+      var kk = view.jdate, has = !jempty(jget(kk));
+      jclean(kk); state.askedOn = today(); save(); view.prompt = false;
+      if (act === "jsave" && has) { toast("Saved to your Journals"); celebrateColor(getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#F4C95D", 16); }
+      render(); return;
+    }
+
+    if (act !== "delete" && act !== "jdel") view.confirmDel = false;
+
+    if (act === "go") { leaveEntry(); view.screen = t.getAttribute("data-to"); view.draft = null; }
+    else if (act === "new") { leaveEntry(); openForm(null); }
+    else if (act === "edit") openForm(get(id));
+    else if (act === "cancel") { view.screen = d && d.id ? "habit" : "today"; if (d && d.id) view.id = d.id; view.draft = null; }
+    else if (act === "save") { if (!saveDraft()) return; }
+    else if (act === "welcome") {
+      var nm = document.getElementById("who").value.trim();
+      if (!nm) { document.getElementById("who").focus(); return; }
+      state.name = nm; state.skipWelcome = true; save(); view.screen = "today";
+    }
+    else if (act === "skipwelcome") { state.skipWelcome = true; save(); view.screen = "today"; }
+    else if (act === "open") { h = get(id); view.screen = "habit"; view.id = id; view.sel = Math.max(0, Math.min(goalOf(h) - 1, ti(h))); }
+    else if (act === "tick") {
+      h = get(id); var i = ti(h);
+      if (i >= 0 && i < goalOf(h)) {
+        var was = isDone(h, today()), r = t.getBoundingClientRect();
+        toggleDay(h, i);
+        if (!was) burst(r.left + r.width / 2, r.top + r.height / 2, habitColor(h));
+      }
+    }
+    else if (act === "toggle-sel") toggleDay(get(view.id), view.sel);
+    else if (act === "sel") view.sel = +t.getAttribute("data-i");
+    else if (act === "mood") { h = get(view.id); var e = h.days[addDays(h.start, view.sel)], m = t.getAttribute("data-m"); if (e) { e.mood = e.mood === m ? "" : m; save(); } }
+    else if (act === "regrow") { h = get(id); h.blooms = (h.blooms || 0) + 1; h.start = today(); view.sel = 0; save(); view.screen = "habit"; view.id = id; }
+    else if (act === "jopen") { view.entryDate = t.getAttribute("data-d"); view.jdate = view.entryDate; view.screen = "entry"; }
+    else if (act === "jback") { jclean(view.entryDate); view.screen = "journals"; }
+    else if (act === "jnav") {
+      jclean(view.entryDate);
+      var nd = addDays(view.entryDate, +t.getAttribute("data-dir"));
+      if (nd > today()) return;
+      view.entryDate = nd; view.jdate = nd; view.confirmDel = false; render(true); return;
+    }
+    else if (act === "jdel") {
+      if (!view.confirmDel) view.confirmDel = true;
+      else { delete state.journal[view.entryDate]; save(); view.confirmDel = false; view.screen = "journals"; toast("Entry deleted"); }
+    }
+    else if (act === "jfilter") view.jfilter = t.getAttribute("data-m");
+    else if (act === "jask") { state.journalAsk = !state.journalAsk; save(); }
+    else if (act === "suggest") { var inp = document.getElementById("f-name"); inp.value = t.getAttribute("data-text"); d.name = inp.value; syncDraft(); render(); return; }
+    else if (act === "femoji") { syncDraft(); var em = t.getAttribute("data-e"); d.emoji = d.emoji === em ? "" : em; }
+    else if (act === "fcolor") { syncDraft(); d.custom = ""; d.color = +t.getAttribute("data-c"); }
+    else if (act === "fgoal") { syncDraft(); d.goal = +t.getAttribute("data-g"); }
+    else if (act === "fstep") { syncDraft(); d.goal = Math.max(3, Math.min(100, d.goal + (+t.getAttribute("data-s")))); }
+    else if (act === "radd") { syncDraft(); d.reminders.push({ id: "r" + Date.now() + Math.floor(Math.random() * 99), time: "20:00", days: [0, 1, 2, 3, 4, 5, 6] }); }
+    else if (act === "rdel") { syncDraft(); var rid = t.getAttribute("data-r"); d.reminders = d.reminders.filter(function (r) { return r.id !== rid; }); }
+    else if (act === "rtime") { syncDraft(); var rr = d.reminders.filter(function (x) { return x.id === t.getAttribute("data-r"); })[0]; if (rr) rr.time = t.getAttribute("data-t"); }
+    else if (act === "rday") {
+      syncDraft();
+      var r2 = d.reminders.filter(function (x) { return x.id === t.getAttribute("data-r"); })[0], dn = +t.getAttribute("data-d"), ix = r2.days.indexOf(dn);
+      if (ix >= 0) r2.days.splice(ix, 1); else r2.days.push(dn);
+    }
+    else if (act === "ics-one") { syncDraft(); exportIcs([{ id: d.id || "new", name: d.name || "Habit", emoji: d.emoji, remMsg: d.remMsg, goal: d.goal, start: d.start, days: {}, reminders: d.reminders }], "twentyone-" + (d.name || "habit").toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".ics"); return; }
+    else if (act === "ics-all") { exportIcs(state.habits, "twentyone-reminders.ics"); return; }
+    else if (act === "perm") { try { Notification.requestPermission().then(function () { render(); }); } catch (x) {} return; }
+    else if (act === "test") { syncDraft(); notify({ id: d.id || "new", name: d.name || "Your habit", emoji: d.emoji, remMsg: d.remMsg, goal: d.goal, start: d.start, days: {} }, "This is how your reminder will look."); return; }
+    else if (act === "pal") { state.pal = t.getAttribute("data-v"); save(); applyTheme(); }
+    else if (act === "shape") { state.shape = t.getAttribute("data-v"); save(); }
+    else if (act === "export") { download("twentyone-backup-" + today() + ".json", JSON.stringify(state, null, 2), "application/json"); toast("Backup saved to your downloads."); return; }
+    else if (act === "import") { document.getElementById("importfile").click(); return; }
+    else if (act === "delete") {
+      if (!view.confirmDel) view.confirmDel = true;
+      else { state.habits = state.habits.filter(function (x) { return x.id !== d.id; }); save(); view.confirmDel = false; view.draft = null; view.screen = "today"; }
+    }
+    render();
+  });
+
+  document.getElementById("importfile").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var p = JSON.parse(rd.result);
+        if (!p || !Array.isArray(p.habits)) throw new Error("bad");
+        adopt(p); state.skipWelcome = true; save(); applyTheme(); view.screen = "today"; toast("Backup restored."); render();
+      } catch (x) { toast("That file doesn't look like a Twenty-one backup."); }
+    };
+    rd.readAsText(f); e.target.value = "";
+  });
+
+  /* ---------- start ---------- */
+  load(); applyTheme(); render();
+  setTimeout(maybePrompt, 900);
+  setInterval(dueNow, 20000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) { dueNow(); maybePrompt(); } });
+  if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme); } catch (e) {} }
+  try { if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(function () {}); } catch (e) {}
+})();
+</script>
+</body>
+</html>
